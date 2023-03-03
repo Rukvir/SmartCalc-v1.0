@@ -12,34 +12,34 @@ Data pull_stack(char *value, Data value_x) {
   int k = 0;  //  нужно придумать что то элегантнее
   char str[256] = {'\0'};  //  есть ли не обходимось создавать статический масив
   int len = strlen(value);
-  len += 1;
-  if (value[0] == '-' || value[0] == '+') {
-    push(&list, 0, '0', 0);
-  }
+//   len += 1;
+//   if (value[0] == '-' || value[0] == '+') {
+//     push(&list, 0, '0', 0);
+//   }
   while (i != len) {
     if ((value[i] > 47 && value[i] < 58) || value[i] == '.') {
       str[j] = value[i];
       num_flag = 1;
       j++;
-      if (value[i + 1] == '(' || value[i - 1] == ')') push(&s_lst, 0, '*', 3);
-    } else if (value[i] == 'X') {
-      push(&list, value_x, '0', 0);
-      if ((value[i - 1] > 47 && value[i - 1] < 58) ||
-          (value[i + 1] > 47 && value[i + 1] < 58)) {
-        push(&s_lst, 0, '*', 3);  //  умножение между Х и числом
-      }
-    } else if (value[i] == '(' &&
-               (value[i + 1] == '+' || value[i + 1] == '-')) {
-      push(&list, 0, 0, 0);  //  пушу 0 если после скобки знак
-      push(&s_lst, 0, '(', -1);
+//       if (value[i + 1] == '(' || value[i - 1] == ')') push(&s_lst, 0, '*', 3);
+//     } else if (value[i] == 'X') {
+//       push(&list, value_x, '0', 0);
+//       if ((value[i - 1] > 47 && value[i - 1] < 58) ||
+//           (value[i + 1] > 47 && value[i + 1] < 58)) {
+//         push(&s_lst, 0, '*', 3);  //  умножение между Х и числом
+//       }
+//     } else if (value[i] == '(' &&
+//                (value[i + 1] == '+' || value[i + 1] == '-')) {
+//       push(&list, 0, 0, 0);  //  пушу 0 если после скобки знак
+//       push(&s_lst, 0, '(', -1);
     } else {  //  не цифры
       j = 0;
       if (num_flag) {
         num = atof(str);
         push(&list, num, '0', 0);
         memset(&str, '\0', 256);  //  зачистить статическую строку
+        num_flag = 0;
       }
-      num_flag = 0;
       if (value[i] > 96 && value[i] < 123) {  // alphabet
         str[k] = value[i];
         have_trg = 1;
@@ -85,8 +85,9 @@ int trigonometr(Node **s_lst, char *word) {
     err = 1;
     push(s_lst, 0, 'B', 4);
   } else if (!strcmp(str, tmp1)) {  // sin
+    
+    push_c(stack_other_symbols, 'A', 4)
     err = 1;
-    push(s_lst, 0, 'C', 4);
   } else if (!strcmp(str, tmp2)) {  // tan
     err = 1;
     push(s_lst, 0, 'D', 4);
